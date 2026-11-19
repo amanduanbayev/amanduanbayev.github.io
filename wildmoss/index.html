@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  FLOWER & PLANT SHOP — ONE-PAGE TEMPLATE
+  ============================================================
+  HOW TO REBRAND
+  1. Edit the CONFIG object at the top of the <script> at the bottom of this file.
+     Every piece of copy, link, price, testimonial, FAQ and image path lives there.
+  2. Edit the color variables in :root (CSS, just below).
+  That's it — the whole page is rendered from CONFIG.
+
+  TOKENS — use these anywhere inside CONFIG text; they're replaced at render time:
+  {{BRAND_NAME}} {{TAGLINE}} {{EMAIL}} {{PHONE}} {{ADDRESS}} {{CITY}} {{YEAR}}
+
+  HEADLINE MARKUP — in any heading string:
+  *word*   → light italic
+  **word** → heavy black bold
+
+  IMAGES — every image is { src, alt, label }.
+  Leave src "" to show a labeled placeholder slot; put a path/URL in src to show the real image.
+  Use transparent-background PNG/WebP cut-outs for flowers and potted plants.
+  ============================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wildmoss Florals</title>
+<meta name="description" content="Wildmoss Florals: seasonal bouquets, easy-going indoor plants and wedding flowers in Burnaby, BC.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3.5c4.6 3.6 6.8 7.4 6.8 11a6.8 6.8 0 0 1-13.6 0c0-3.6 2.2-7.4 6.8-11z' fill='%232B1C14'/%3E%3Cpath d='M16 21v8' stroke='%232B1C14' stroke-width='2'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#EDE6D8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* ============ BRAND VARIABLES (edit these) ============ */
+:root{
+  --white:#FFFFFF;          /* main background */
+  --sand:#EDE6D8;           /* product cards, newsletter panel */
+  --sand-grad:linear-gradient(135deg,#E9E1D3 0%,#D9CDBB 100%); /* hero background */
+  --ink:#111111;            /* text, buttons */
+  --cocoa:#2B1C14;          /* dark feature banner, footer */
+  --muted:#6B6158;          /* small body text */
+  --muted-strong:#4E443C;   /* small text on the darker sand gradient (keeps contrast AA) */
+  --line:rgba(17,17,17,.12);
+  --placeholder:#F8F4ED;
+
+  --font-serif:"Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans:"Montserrat", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --r-xl:40px; --r-lg:32px; --r-md:20px;
+  --container:1240px;
+  --gutter:clamp(20px,4vw,48px);
+  --header-h:78px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+
+/* ============ BASE ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 12px)}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--font-sans);font-size:14px;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;display:block}
+main{overflow-x:hidden}
+@supports (overflow:clip){main{overflow-x:clip}}
+a{color:inherit}
+button{font:inherit;color:inherit}
+ul{margin:0;padding:0;list-style:none}
+h1,h2,h3,h4,p{margin:0}
+.container{width:min(100% - 2*var(--gutter), var(--container));margin-inline:auto}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:8px}
+.on-dark :focus-visible{outline-color:#fff}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:fixed;left:16px;top:-60px;z-index:100;background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-size:12px;transition:top .2s}
+.skip-link:focus{top:12px}
+
+/* ============ TYPE ============ */
+.mix{font-family:var(--font-serif);font-weight:400;line-height:1;letter-spacing:-.015em}
+.mix em{font-style:italic;font-weight:400}
+.mix strong{font-weight:900;font-style:normal;letter-spacing:-.02em}
+.eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.section{padding:clamp(72px,9vw,120px) 0}
+.section-head{text-align:center}
+.section-title{font-size:clamp(36px,4.8vw,60px)}
+.section-intro{max-width:540px;margin:18px auto 0;color:var(--muted);font-size:14px}
+
+/* ============ BUTTONS ============ */
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:17px 36px;font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .35s var(--ease),background-color .3s,color .3s}
+.pill:hover{transform:translateY(-2px)}
+.pill:active{transform:translateY(0)}
+.pill--sm{padding:9px 16px;font-size:9.5px;letter-spacing:.14em}
+.pill--light{background:#fff;color:var(--ink)}
+.pill--ring{position:relative;isolation:isolate}
+.pill--ring::before{content:"";position:absolute;inset:0;border:1px solid var(--ink);border-radius:inherit;transform:translate(8px,7px);z-index:-1;transition:transform .45s var(--ease)}
+.pill--ring:hover::before{transform:translate(0,0) scale(1.08,1.25)}
+.icon-btn{width:46px;height:46px;flex:0 0 auto;border-radius:50%;background:var(--ink);color:#fff;border:0;display:grid;place-items:center;cursor:pointer;transition:transform .3s var(--ease),background-color .3s}
+.icon-btn svg{width:18px;height:18px}
+.icon-btn:hover:not(:disabled){transform:scale(1.06)}
+.icon-btn:disabled{background:#D3CCC1;cursor:not-allowed}
+
+/* ============ IMAGE SLOTS ============ */
+.figure{position:relative}
+.figure-shadow{position:absolute;left:14%;right:14%;bottom:-5%;height:13%;background:radial-gradient(ellipse at center,rgba(43,28,20,.38) 0%,rgba(43,28,20,0) 70%);filter:blur(6px);z-index:0;pointer-events:none}
+.figure-art{position:relative;z-index:1;width:100%;height:100%}
+.figure-art img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 26px 26px rgba(43,28,20,.22))}
+.float{animation:floaty 14s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+.ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:10%;background:var(--placeholder);border:1.5px dashed rgba(43,28,20,.24);color:var(--muted);border-radius:24px;box-shadow:0 18px 40px -18px rgba(43,28,20,.35)}
+.ph svg{width:clamp(22px,22%,64px);height:auto;flex:0 0 auto}
+.ph span{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;line-height:1.5;max-width:24ch}
+.ph--round{border-radius:50%}
+.ph--fill{border-radius:inherit;box-shadow:none;border-color:rgba(43,28,20,.18)}
+.ph--glass{background:rgba(250,247,241,.72);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.media-fill img{width:100%;height:100%;object-fit:cover}
+
+/* ============ HEADER ============ */
+.site-header{position:fixed;inset:0 0 auto;z-index:50;height:var(--header-h);transition:background-color .35s,box-shadow .35s,backdrop-filter .35s}
+.site-header.is-scrolled,.site-header.menu-open{background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);box-shadow:0 1px 0 var(--line)}
+.header-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:12.5px;letter-spacing:.34em;text-transform:uppercase}
+.logo svg{width:26px;height:26px;flex:0 0 auto}
+.nav{display:flex;align-items:center;gap:clamp(20px,3vw,44px)}
+.nav-links{display:flex;gap:clamp(20px,2.6vw,38px)}
+.nav-links a{position:relative;display:inline-block;text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;padding:6px 0}
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease)}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.cart-btn{position:relative}
+.cart-count{position:absolute;top:-5px;right:-5px;min-width:21px;height:21px;padding:0 5px;border-radius:11px;background:#fff;color:var(--ink);border:1.5px solid var(--ink);font-size:10px;font-weight:600;line-height:1;display:grid;place-items:center}
+.cart-count.bump{animation:bump .5s var(--ease)}
+@keyframes bump{40%{transform:scale(1.35)}}
+.menu-toggle{display:none;width:46px;height:46px;border-radius:50%;border:1px solid var(--ink);background:transparent;cursor:pointer;place-items:center;padding:0}
+.menu-toggle-inner>span{display:block;width:18px;height:1.5px;background:var(--ink);transition:transform .3s var(--ease)}
+.menu-toggle-inner>span+span{margin-top:5px}
+.menu-open .menu-toggle-inner>span:first-child{transform:translateY(3.25px) rotate(45deg)}
+.menu-open .menu-toggle-inner>span:last-child{transform:translateY(-3.25px) rotate(-45deg)}
+.menu-toggle-inner{display:flex;flex-direction:column;align-items:center}
+
+/* ============ HERO ============ */
+.hero{--hero-pb:clamp(110px,10vw,150px);position:relative;margin:0 clamp(8px,1.4vw,18px);background:var(--sand-grad);border-radius:0 0 var(--r-xl) var(--r-xl);padding:calc(var(--header-h) + clamp(40px,7vw,100px)) 0 var(--hero-pb)}
+.hero-inner{position:relative}
+.hero-copy{position:relative;z-index:1}
+.hero .eyebrow{color:var(--muted-strong);margin-bottom:22px}
+.hero-title{font-size:clamp(46px,9.4vw,146px);line-height:.9;letter-spacing:-.025em;white-space:nowrap}
+.hero-title .line{display:block}
+.hero-title .line:nth-child(2){padding-left:2.4em}
+.hero-title .line:nth-child(3){padding-left:1.1em}
+.hero-text{max-width:330px;margin:clamp(28px,3vw,40px) 0 clamp(28px,3vw,38px);color:var(--muted-strong);font-size:13.5px}
+.hero-figure{position:absolute;z-index:2;right:-3%;top:clamp(40px,7.5vw,120px);width:clamp(300px,42vw,600px);aspect-ratio:1}
+
+/* ============ RAILS / CAROUSELS ============ */
+.rail{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:4px;scrollbar-width:none;overscroll-behavior-x:contain;cursor:grab;border-radius:12px}
+.rail::-webkit-scrollbar{display:none}
+.rail.is-drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.rail.is-drag *{pointer-events:none}
+.rail-list{display:flex;align-items:flex-start;gap:24px;width:max-content;padding:4px 4px 44px}
+.rail-list>li{scroll-snap-align:start;flex:0 0 auto}
+.rail-controls{display:flex;justify-content:center;gap:12px;margin-top:6px}
+.rail-controls[hidden]{display:none}
+
+/* ============ TOP SELLERS ============ */
+.sellers{padding-top:clamp(150px,15vw,230px)}
+.product-list{padding-top:110px}
+.product{width:clamp(236px,21vw,272px);margin-top:calc(var(--step,0) * 40px);background:var(--sand);border-radius:var(--r-md);padding:0 22px 22px;position:relative;transition:transform .5s var(--ease)}
+.product-figure{width:150px;height:150px;margin:-92px auto 18px;transition:transform .6s var(--ease)}
+.product:hover .product-figure{transform:translateY(-8px) rotate(-3deg)}
+.product h3{font-family:var(--font-serif);font-weight:500;font-size:22px;line-height:1.2;margin-bottom:8px}
+.product p{font-size:12.5px;color:var(--muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3.2em;margin-bottom:20px}
+.product-foot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.price{font-family:var(--font-serif);font-size:26px;line-height:1}
+.price .cur{font-size:.6em;vertical-align:.45em;margin-right:1px}
+
+/* ============ FLOWER OF THE DAY ============ */
+.fotd{padding-top:clamp(130px,13vw,190px)}
+.fotd-banner{position:relative;background:var(--cocoa);color:#fff;border-radius:var(--r-lg);min-height:400px;display:grid;grid-template-columns:minmax(240px,36%) 1fr;align-items:center}
+.fotd-art{position:absolute;left:clamp(-48px,-3vw,-16px);top:clamp(-120px,-9vw,-70px);width:clamp(240px,27vw,370px);aspect-ratio:1;pointer-events:none}
+.fotd-rings{position:absolute;inset:-48%;width:196%;height:196%;fill:none;stroke:rgba(255,255,255,.2);stroke-width:.35;z-index:0;overflow:visible}
+.fotd-rings .dash{stroke-dasharray:1.2 2.6;transform-box:fill-box;transform-origin:center;animation:spin 90s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fotd-figure{position:relative;z-index:1;width:100%;height:100%}
+.fotd-content{grid-column:2;padding:clamp(44px,5vw,72px) clamp(28px,6vw,88px) clamp(44px,5vw,72px) 0}
+.fotd .eyebrow{color:rgba(255,255,255,.62)}
+.fotd-title{font-size:clamp(36px,4.2vw,56px);margin:14px 0 22px}
+.fotd-sub{font-family:var(--font-sans);font-weight:600;font-size:15px;letter-spacing:.02em;margin-bottom:12px}
+.fotd-sub .latin{font-family:var(--font-serif);font-style:italic;font-weight:400;color:rgba(255,255,255,.6);margin-left:6px}
+.fotd-content p{color:rgba(255,255,255,.74);font-size:13.5px;max-width:560px}
+.fotd-content p+p{margin-top:12px}
+.facts{display:flex;flex-wrap:wrap;gap:0;margin:28px 0 30px;border-top:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14)}
+.facts div{padding:16px 28px 16px 0;margin-right:28px;border-right:1px solid rgba(255,255,255,.14)}
+.facts div:last-child{border-right:0;margin-right:0}
+.facts dt{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.58);font-weight:600}
+.facts dd{margin:4px 0 0;font-family:var(--font-serif);font-size:19px}
+
+/* ============ CATEGORIES ============ */
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(14px,2vw,28px);margin-top:clamp(40px,5vw,64px)}
+.cat{display:block;text-decoration:none;text-align:center;border-radius:999px 999px 24px 24px}
+.cat-arch{position:relative;aspect-ratio:3/4;border-radius:999px 999px 24px 24px;overflow:hidden;background:var(--sand);isolation:isolate}
+.cat-media{position:absolute;inset:0;transition:transform .9s var(--ease)}
+.cat:hover .cat-media,.cat:focus-visible .cat-media{transform:scale(1.08)}
+.cat-name{display:block;font-family:var(--font-serif);font-size:21px;margin-top:16px;line-height:1.2}
+.cat-sub{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+
+/* ============ CARE ============ */
+.care-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,64px);margin-top:clamp(44px,5vw,64px)}
+.tip{border-top:1px solid var(--line);padding-top:30px}
+.tip-icon{width:54px;height:54px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;margin-bottom:22px}
+.tip-icon svg{width:24px;height:24px}
+.tip h3{font-size:26px;margin-bottom:12px}
+.tip p{color:var(--muted);font-size:13.5px}
+.faq{max-width:820px;margin:clamp(72px,8vw,110px) auto 0}
+.faq-title{font-size:clamp(30px,3.4vw,42px);text-align:center;margin-bottom:28px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-of-type{border-top:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 2px;font-family:var(--font-serif);font-size:clamp(18px,1.8vw,21px)}
+.faq summary::-webkit-details-marker{display:none}
+.faq .plus{width:34px;height:34px;flex:0 0 auto;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;transition:transform .35s var(--ease),background-color .3s,color .3s}
+.faq .plus svg{width:14px;height:14px}
+.faq details[open] .plus{transform:rotate(45deg);background:var(--ink);color:#fff}
+.faq-answer{color:var(--muted);font-size:13.5px;padding:0 2px 24px;max-width:660px}
+
+/* ============ TESTIMONIALS ============ */
+.quote-list{padding-top:48px}
+.quote-card{--c:#F4B6C2;width:clamp(248px,22vw,290px);margin-top:calc(var(--step,0) * 40px);background:var(--sand);border-radius:var(--r-md);padding:34px 26px 30px;position:relative;overflow:hidden;min-height:270px;display:flex;flex-direction:column}
+.quote-wrap{position:relative;padding-top:0}
+.avatar{position:absolute;z-index:2;top:-28px;right:22px;width:64px;height:64px;border-radius:50%;background:var(--c);border:4px solid var(--white);display:grid;place-items:center;font-family:var(--font-serif);font-weight:700;font-size:20px;color:var(--ink);box-shadow:0 10px 24px -10px rgba(43,28,20,.4)}
+.quote-card h3{font-family:var(--font-serif);font-weight:500;font-size:22px;line-height:1.2;padding-right:70px}
+.quote-card blockquote{margin:14px 0 22px;font-size:13px;color:var(--muted);line-height:1.7;flex:1}
+.loc{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.loc .dot{width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px rgba(255,255,255,.7)}
+.watermark{position:absolute;right:-14px;bottom:-14px;width:110px;height:110px;color:var(--ink);opacity:.07;pointer-events:none}
+.quote-item{position:relative;padding-top:28px}
+.quote-card{margin:calc(var(--step,0) * 40px) 0 0}
+.quote-item .avatar{top:calc(var(--step,0) * 40px)}
+
+/* ============ NEWSLETTER ============ */
+.news-panel{position:relative;max-width:1060px;margin:0 auto;background:var(--sand);border-radius:var(--r-xl);padding:clamp(56px,7vw,100px) clamp(24px,8vw,120px);text-align:center}
+.news-title{font-size:clamp(34px,4.4vw,56px)}
+.news-text{max-width:460px;margin:18px auto 0;color:var(--muted);font-size:13.5px}
+.news-form{display:flex;gap:8px;max-width:500px;margin:34px auto 0;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px}
+.news-form input{flex:1;min-width:0;border:0;background:transparent;padding:0 22px;font:inherit;font-size:14px;color:var(--ink);border-radius:999px}
+.news-form input::placeholder{color:#8A8077}
+.news-form input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.news-form input[aria-invalid="true"]{box-shadow:inset 0 0 0 1px #9B2C2C}
+.news-msg{min-height:1.6em;margin-top:14px;font-size:13px;color:var(--muted-strong)}
+.news-figure{position:absolute;right:clamp(-90px,-6vw,-36px);top:50%;width:clamp(170px,19vw,270px);aspect-ratio:1;transform:translateY(-50%);pointer-events:none}
+.news-figure-sm{position:absolute;left:clamp(-50px,-3vw,-20px);bottom:clamp(-40px,-3vw,-24px);width:clamp(90px,10vw,140px);aspect-ratio:1;pointer-events:none}
+
+/* ============ FOOTER ============ */
+.site-footer{background:var(--cocoa);color:rgba(255,255,255,.7);margin:clamp(90px,10vw,130px) clamp(8px,1.4vw,18px) 0;border-radius:var(--r-xl) var(--r-xl) 0 0;padding:clamp(64px,7vw,90px) 0 30px;font-size:13px}
+.site-footer .logo{color:#fff}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:clamp(32px,4vw,56px)}
+.footer-about{margin:20px 0 26px;max-width:300px}
+.site-footer h4{color:#fff;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:600;margin-bottom:20px}
+.site-footer nav li+li,.contact-list li+li{margin-top:10px}
+.site-footer a{text-decoration:none;transition:color .25s}
+.site-footer a:hover{color:#fff}
+.contact-list li{display:flex;gap:12px;align-items:flex-start}
+.contact-list svg{width:16px;height:16px;flex:0 0 auto;margin-top:3px;opacity:.75}
+.socials{display:flex;gap:10px}
+.socials a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;transition:background-color .3s,color .3s,border-color .3s}
+.socials a:hover{background:#fff;color:var(--cocoa);border-color:#fff}
+.socials svg{width:17px;height:17px}
+.footer-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:clamp(48px,6vw,72px);padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:12px}
+.footer-bottom ul{display:flex;gap:24px}
+
+/* ============ TOAST ============ */
+.toast{position:fixed;left:50%;bottom:28px;z-index:90;display:flex;align-items:center;gap:12px;background:var(--ink);color:#fff;padding:13px 22px 13px 14px;border-radius:999px;font-size:13px;box-shadow:0 18px 40px -12px rgba(0,0,0,.4);opacity:0;transform:translate(-50%,20px);pointer-events:none;transition:opacity .35s var(--ease),transform .35s var(--ease);max-width:calc(100vw - 32px)}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+.toast-icon{width:26px;height:26px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;flex:0 0 auto}
+.toast-icon svg{width:14px;height:14px}
+
+/* ============ REVEAL ============ */
+.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0ms)}
+.js .reveal.is-in{opacity:1;transform:none}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1100px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:860px){
+  :root{--header-h:68px}
+  .menu-toggle{display:grid}
+  .nav-links{position:fixed;top:calc(var(--header-h) + 8px);left:12px;right:12px;flex-direction:column;gap:0;background:#fff;border-radius:24px;padding:10px 26px;box-shadow:0 24px 60px rgba(43,28,20,.2);opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .3s var(--ease),transform .3s var(--ease),visibility 0s .3s}
+  .menu-open .nav-links{opacity:1;visibility:visible;transform:none;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+  .nav-links a{display:block;padding:16px 0;border-bottom:1px solid var(--line)}
+  .nav-links li:last-child a{border-bottom:0}
+  .nav-links a::after{display:none}
+  .nav{gap:10px}
+
+  .hero{--hero-pb:0px}
+  .hero-title{white-space:normal}
+  .hero-title .line:nth-child(2){padding-left:1.2em}
+  .hero-text{max-width:420px}
+  .hero-figure{position:relative;right:auto;top:auto;width:min(78vw,420px);margin:36px auto calc(-1 * clamp(80px,20vw,120px))}
+  .sellers{padding-top:clamp(130px,26vw,170px)}
+
+  .product,.quote-card{margin-top:0}
+  .quote-item .avatar{top:0}
+  .product{width:min(74vw,280px)}
+  .quote-card{width:min(78vw,300px)}
+  .rail-list{gap:16px}
+
+  .fotd-banner{display:block;min-height:0}
+  .fotd-art{position:relative;left:auto;top:auto;width:min(62vw,280px);margin:0 auto;transform:translateY(-80px);margin-bottom:-80px}
+  .fotd-content{padding:28px 26px 44px}
+
+  .cats{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(-1 * var(--gutter));padding:4px var(--gutter) 8px;gap:16px}
+  .cats::-webkit-scrollbar{display:none}
+  .cats>li{flex:0 0 min(44vw,220px);scroll-snap-align:start}
+
+  .care-grid{grid-template-columns:1fr;gap:12px}
+
+  .news-panel{padding-top:110px}
+  .news-figure{top:-70px;right:-14px;transform:none;width:150px}
+  .news-figure-sm{display:none}
+}
+@media (max-width:560px){
+  .news-form{flex-direction:column;background:transparent;border:0;padding:0;gap:10px}
+  .news-form input{flex:0 0 54px;background:#fff;border:1px solid var(--line);height:54px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column}
+  .facts div{padding-right:18px;margin-right:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0ms!important}
+  .js .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" id="site-header"></header>
+<main id="main"></main>
+<footer class="site-footer on-dark" id="contact"></footer>
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<noscript><p style="padding:120px 24px;text-align:center">Please enable JavaScript to view this site.</p></noscript>
+
+<script>
+/* =====================================================================
+   CONFIG — all content lives here. Edit this + the CSS :root colors.
+   ===================================================================== */
+const CONFIG = {
+  brand: {
+    name:    "Wildmoss Florals",
+    tagline: "Seasonal flowers & easy-going plants",
+    email:   "amanduanbaev@gmail.com",
+    phone:   "(778) 775-1041",
+    address: "Hastings St, Burnaby Heights",
+    city:    "Burnaby, BC",
+    hours:   "Mon–Sat 9 am – 6 pm · Sun 10 am – 4 pm",
+    currency: "$",
+    locale:  "en-CA"
+  },
+
+  meta: {
+    description: "{{BRAND_NAME}} — {{TAGLINE}}. Seasonal bouquets, indoor plants and wedding flowers in {{CITY}}."
+  },
+
+  nav: [
+    { label: "Home",        href: "#home"    },
+    { label: "Flower Care", href: "#care"    },
+    { label: "About",       href: "#about"   },
+    { label: "Contact",     href: "#contact" }
+  ],
+
+  cart: { startCount: 0 },
+
+  hero: {
+    eyebrow: "Florist & plant studio — {{CITY}}",
+    headline: ["The *world* of", "**Blooms**"],     // one string per line; lines are staggered
+    text: "Seasonal stems picked at just the right stage of opening, conditioned overnight and arranged the same morning — so they arrive ready to last a week, not already fading.",
+    cta: { label: "Read more", href: "#about" },
+    image: { src: "hero-dahlia.svg", alt: "A large yellow flower head cut out on a transparent background", label: "Hero flower · transparent PNG · 900×900" }
+  },
+
+  sellers: {
+    title: "Top *Selling* **Plants**",
+    intro: "The plants our customers come back for: easy to keep, generous with new growth, and potted in breathable ceramic that's ready to gift."
+  },
+
+  products: [
+    { name: "Golden Pothos",  price: 32, description: "Trailing heart-shaped leaves that forgive a missed watering. Happy anywhere from low to bright indirect light.",
+      image: { src: "golden-pothos.svg", alt: "Golden pothos in a ceramic pot", label: "Potted plant · PNG · 600×600" } },
+    { name: "Moth Orchid",    price: 58, description: "Arching sprays that bloom for up to three months. Soak the bark weekly, then let it drain completely.",
+      image: { src: "moth-orchid.svg", alt: "Pink moth orchid in a ceramic pot", label: "Potted plant · PNG · 600×600" } },
+    { name: "Barrel Cactus",  price: 26, description: "A sculptural, golden-spined globe. Give it full sun and a deep drink every three weeks in summer.",
+      image: { src: "barrel-cactus.svg", alt: "Barrel cactus in a brass pot", label: "Potted plant · PNG · 600×600" } },
+    { name: "Peace Lily",     price: 44, description: "Glossy leaves and white blooms. It droops when thirsty and perks up within hours of watering.",
+      image: { src: "peace-lily.svg", alt: "Peace lily in a white pot", label: "Potted plant · PNG · 600×600" } },
+    { name: "Snake Plant",    price: 38, description: "Upright and architectural, nearly impossible to kill. Let the soil dry right through between waterings.",
+      image: { src: "snake-plant.svg", alt: "Snake plant in a ceramic pot", label: "Potted plant · PNG · 600×600" } },
+    { name: "Fiddle Leaf Fig", price: 89, description: "Big violin-shaped leaves for a bright corner. Turn it a quarter each month so it grows straight.",
+      image: { src: "fiddle-leaf-fig.svg", alt: "Fiddle leaf fig in a tall pot", label: "Potted plant · PNG · 600×600" } },
+    { name: "Calathea",       price: 42, description: "Painted leaves that fold upward at night. Loves humidity and room-temperature, filtered water.",
+      image: { src: "calathea.svg", alt: "Calathea with patterned leaves in a pot", label: "Potted plant · PNG · 600×600" } }
+  ],
+
+  flowerOfDay: {
+    title: "Flower *of the day*",
+    name: "Peony",
+    latin: "Paeonia lactiflora",
+    paragraphs: [
+      "Peonies are the great late-spring flower: loose, layered and softly scented, opening from a tight ball to a bloom the size of your palm in two or three days.",
+      "Buy them in bud — they should feel soft, like a marshmallow, when gently squeezed. Recut the stems at an angle, use cool water and change it every second day. If buds are slow to open, a few hours in a warm room will wake them up."
+    ],
+    facts: [
+      { label: "Season",    value: "May – June" },
+      { label: "Vase life", value: "5–7 days" },
+      { label: "Meaning",   value: "Good fortune" }
+    ],
+    price: 48,
+    cta: "Add a bunch",
+    image: { src: "peony.svg", alt: "A pink peony in full bloom", label: "Pink flower · transparent PNG · 800×800" }
+  },
+
+  categories: {
+    title: "Made for *every* **Moment**",
+    intro: "{{BRAND_NAME}} is a small flower and plant studio in {{CITY}}. We buy from growers twice a week, keep our range seasonal, and send every order out with a care card written for that exact plant or bouquet.",
+    items: [
+      { name: "Bouquets",      note: "Hand-tied & ready to gift",  href: "#shop", image: { src: "cat-bouquets.svg", alt: "Hand-tied seasonal bouquet",   label: "Category photo · 600×800" } },
+      { name: "Indoor Plants", note: "For bright and shady rooms", href: "#shop", image: { src: "cat-indoor.svg", alt: "Leafy indoor plants on a shelf", label: "Category photo · 600×800" } },
+      { name: "Succulents",    note: "Low water, high charm",      href: "#shop", image: { src: "cat-succulents.svg", alt: "Small succulents in clay pots",  label: "Category photo · 600×800" } },
+      { name: "Gifts",         note: "Vases, candles & cards",     href: "#shop", image: { src: "cat-gifts.svg", alt: "Wrapped flower gift box",        label: "Category photo · 600×800" } },
+      { name: "Weddings",      note: "Florals for the big day",    href: "#contact", image: { src: "cat-weddings.svg", alt: "Bridal bouquet with white roses", label: "Category photo · 600×800" } }
+    ]
+  },
+
+  care: {
+    title: "Keep them *blooming* **Longer**",
+    intro: "Three habits that solve most plant problems — whether it's a fern on the windowsill or a bouquet on the dining table.",
+    tips: [
+      { icon: "water", title: "Water *by* touch",
+        text: "Water by feel, not by calendar. Push a finger two centimetres into the soil: if it's dry, water slowly until it runs from the drainage hole, then empty the saucer so roots never sit in water." },
+      { icon: "light", title: "Find the *right* light",
+        text: "Most leafy plants want bright, indirect light — close to a window but out of harsh afternoon sun. Leaning stems or pale new leaves are a sign to move it closer. Keep cut flowers away from heaters and direct sun." },
+      { icon: "soil",  title: "Start with *good* soil",
+        text: "Use a free-draining mix and always a pot with a hole. Repot in spring, only one size up, once roots start circling the base. Feed every two to four weeks while the plant is actively growing." }
+    ],
+    faqTitle: "Questions, *answered*"
+  },
+
+  faqs: [
+    { q: "How long will my bouquet last?",
+      a: "Most arrangements look their best for five to eight days. Recut the stems at an angle every two days, refresh the water, and keep the vase away from heaters and fruit bowls — ripening fruit makes flowers age faster." },
+    { q: "Do you deliver the same day?",
+      a: "Yes, anywhere in {{CITY}} for orders placed before 1 pm, Monday to Saturday. Orders after that go out first thing the next morning." },
+    { q: "Can I choose specific flowers?",
+      a: "Of course. Tell us colours you love, stems to avoid, or simply a mood, and our florists will build around what's freshest that week." },
+    { q: "What if my plant arrives damaged?",
+      a: "Send a photo within 48 hours to {{EMAIL}} and we'll replace it or refund you in full." }
+  ],
+
+  testimonials: {
+    title: "Words *from our* **Regulars**",
+    intro: "A few notes from people who've had flowers and plants from us this year.",
+    items: [
+      { name: "Maya Lindqvist", initials: "ML", color: "#F4B6C2", location: "Brentwood",
+        quote: "The peonies arrived as tight buds and opened over three days. My kitchen smelled wonderful all week — the care card was spot on." },
+      { name: "Daniel Okafor",  initials: "DO", color: "#F2D27A", location: "Metrotown",
+        quote: "I've lost every plant I've ever owned. The pothos from here is six months old and has doubled in size. Turns out I was overwatering." },
+      { name: "Priya Raman",    initials: "PR", color: "#BFD1B4", location: "Capitol Hill",
+        quote: "They did the flowers for our wedding on a modest budget. Guests kept asking who the florist was, and nothing wilted before the last dance." },
+      { name: "Tom Becker",     initials: "TB", color: "#F3C2A2", location: "Edmonds",
+        quote: "Ordered a birthday bouquet at eleven, delivered by three. Wrapped beautifully, and the note was written by hand." }
+    ]
+  },
+
+  newsletter: {
+    title: "Letters *from the* **Garden**",
+    text: "One short email a month: what's in season, a care tip that actually works, and early access to holiday pre-orders.",
+    placeholder: "Your email address",
+    button: "Subscribe",
+    success: "Thank you! Your first letter arrives at the start of next month.",
+    error: "Please enter a valid email address.",
+    image:      { src: "news-dahlia.svg", alt: "A yellow flower peeking in from the edge", label: "Flower · PNG · 600×600" },
+    imageSmall: { src: "news-cosmos.svg", alt: "A small pink bloom", label: "Bloom · PNG" }
+  },
+
+  footer: {
+    about: "Seasonal flowers and easy-going plants, arranged by hand in {{CITY}} and delivered with care.",
+    columns: [
+      { title: "Shop", links: [
+        { label: "Bouquets", href: "#about" }, { label: "Indoor Plants", href: "#about" },
+        { label: "Succulents", href: "#about" }, { label: "Gifts", href: "#about" }, { label: "Weddings", href: "#about" } ] },
+      { title: "Help", links: [
+        { label: "Flower Care", href: "#care" }, { label: "FAQs", href: "#faq" },
+        { label: "Delivery", href: "#faq" }, { label: "Top Sellers", href: "#shop" } ] }
+    ],
+    contactTitle: "Visit & Contact",
+    socials: [],
+    legal: [ { label: "Concept site by Aman Duanbayev ↗", href: "../" } ],
+    copyright: "© {{YEAR}} {{BRAND_NAME}}. All rights reserved."
+  },
+
+  toast: { added: "added to your cart", cart: "Your cart has {n} item(s)" }
+};
+
+/* =====================================================================
+   RENDERER — no need to edit below this line
+   ===================================================================== */
+const B = CONFIG.brand;
+const TOKENS = { BRAND_NAME: B.name, TAGLINE: B.tagline, EMAIL: B.email, PHONE: B.phone, ADDRESS: B.address, CITY: B.city, YEAR: new Date().getFullYear() };
+const tok = s => String(s ?? "").replace(/\{\{(\w+)\}\}/g, (m, k) => (k in TOKENS ? TOKENS[k] : m));
+const esc = s => tok(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const mix = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*(.+?)\*/g, "<em>$1</em>");
+const plain = s => tok(s).replace(/\*/g, "");
+const money = n => `<span class="cur">${esc(B.currency)}</span>${Number(n).toLocaleString(B.locale)}`;
+const moneyText = n => `${B.currency}${Number(n).toLocaleString(B.locale)}`;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const I = (body, vb = "0 0 24 24", extra = "") =>
+  `<svg viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" ${extra}>${body}</svg>`;
+const petals = (cx, cy, rx, ry, dy, n = 5) =>
+  Array.from({ length: n }, (_, i) => `<ellipse cx="${cx}" cy="${cy - dy}" rx="${rx}" ry="${ry}" transform="rotate(${(360 / n) * i} ${cx} ${cy})"/>`).join("");
+
+const ICONS = {
+  bud: `<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 3.5c4.6 3.6 6.8 7.4 6.8 11a6.8 6.8 0 0 1-13.6 0c0-3.6 2.2-7.4 6.8-11z" fill="currentColor"/><path d="M16 9.5c-1.7 2.2-2.4 4.4-2 6.8" stroke="var(--logo-cut, #fff)" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".9"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21.3V29"/><path d="M16 26.2c-2.6 0-5-1.4-6-3.9 2.6-.3 5 1 6 3.9z"/><path d="M16 24.8c2.3 0 4.5-1.3 5.4-3.5-2.4-.3-4.5.9-5.4 3.5z"/></g></svg>`,
+  flower: I(`${petals(24, 24, 5, 8.5, 12)}<circle cx="24" cy="24" r="3.6" fill="currentColor" stroke="none"/>`, "0 0 48 48"),
+  watermark: I(`${petals(50, 50, 11, 19, 25, 6)}<circle cx="50" cy="50" r="8"/>`, "0 0 100 100", 'stroke-width="2.2"'),
+  cart: I(`<path d="M5.5 8.5h13l-1.1 11.2a1.5 1.5 0 0 1-1.5 1.3H8.1a1.5 1.5 0 0 1-1.5-1.3L5.5 8.5z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>`),
+  left: I(`<path d="M19 12H5M11 6l-6 6 6 6"/>`),
+  right: I(`<path d="M5 12h14M13 6l6 6-6 6"/>`),
+  plus: I(`<path d="M12 5v14M5 12h14"/>`),
+  check: I(`<path d="M5 12.5l4.5 4.5L19 7.5"/>`, "0 0 24 24", 'stroke-width="2.2"'),
+  water: I(`<path d="M12 3.2c3.8 4.6 6 8.1 6 11.1a6 6 0 0 1-12 0c0-3 2.2-6.5 6-11.1z"/><path d="M9.2 14.6a2.9 2.9 0 0 0 2.6 2.8"/>`),
+  light: I(`<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>`),
+  soil: I(`<path d="M4 12h16"/><path d="M5.2 12l1.5 8.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8l1.5-8.2"/><path d="M12 12V6.5"/><path d="M12 8c0-2.4 1.8-4.2 4.2-4.2 0 2.4-1.8 4.2-4.2 4.2z"/><path d="M12 9.6c0-2-1.6-3.6-3.6-3.6 0 2 1.6 3.6 3.6 3.6z"/>`),
+  pinMap: I(`<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>`),
+  phone: I(`<path d="M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/>`),
+  mail: I(`<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/>`),
+  clock: I(`<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>`),
+  camera: I(`<rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.6" cy="7.4" r=".6" fill="currentColor"/>`),
+  pin: I(`<path d="M9 3.5h6l-1 5 3 3.5H7l3-3.5-1-5z"/><path d="M12 12v8.5"/>`),
+  fb: I(`<path d="M14.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.6 1.6-1.6h1.5V4.3c-.3 0-1.2-.1-2.2-.1-2.2 0-3.8 1.4-3.8 3.9v2.4H9v3h2.6V21"/>`)
+};
+
+/* Image slot: real <img> if src is set, otherwise a labeled placeholder */
+function media(slot, { round = false, fill = false, glass = false } = {}) {
+  slot = slot || {};
+  if (slot.src) return `<img src="${esc(slot.src)}" alt="${esc(slot.alt)}" loading="lazy" decoding="async">`;
+  const cls = ["ph", round && "ph--round", fill && "ph--fill", glass && "ph--glass"].filter(Boolean).join(" ");
+  return `<div class="${cls}" role="img" aria-label="${esc(slot.alt || slot.label)}">${ICONS.flower}<span aria-hidden="true">${esc(slot.label)}</span></div>`;
+}
+/* Cut-out figure with soft ground shadow */
+function figure(slot, opts = {}) {
+  return `<div class="figure-shadow" aria-hidden="true"></div><div class="figure-art${opts.float ? " float" : ""}">${media(slot, opts)}</div>`;
+}
+const head = (id, title, intro) =>
+  `<div class="section-head reveal"><h2 class="mix section-title" id="${id}">${mix(title)}</h2>${intro ? `<p class="section-intro">${esc(intro)}</p>` : ""}</div>`;
+const railControls = (id, label) =>
+  `<div class="rail-controls" data-controls="${id}">
+     <button class="icon-btn" type="button" data-dir="-1" aria-controls="${id}" aria-label="Previous ${label}">${ICONS.left}</button>
+     <button class="icon-btn" type="button" data-dir="1"  aria-controls="${id}" aria-label="Next ${label}">${ICONS.right}</button>
+   </div>`;
+
+/* ---------- Sections ---------- */
+function renderHeader() {
+  return `<div class="container header-inner">
+    <a class="logo" href="#home" aria-label="${esc(B.name)} — back to top">${ICONS.bud}<span>${esc(B.name)}</span></a>
+    <nav class="nav" aria-label="Main">
+      <ul class="nav-links" id="nav-links">
+        ${CONFIG.nav.map(n => `<li><a href="${esc(n.href)}">${esc(n.label)}</a></li>`).join("")}
+      </ul>
+      <div class="nav-actions">
+        <button class="icon-btn cart-btn" type="button" id="cart-btn" aria-label="Cart, 0 items">${ICONS.cart}<span class="cart-count" id="cart-count" aria-hidden="true">0</span></button>
+        <button class="menu-toggle" type="button" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span class="menu-toggle-inner"><span></span><span></span></span></button>
+      </div>
+    </nav>
+  </div>`;
+}
+
+function renderHero() {
+  const h = CONFIG.hero;
+  return `<section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">${esc(h.eyebrow)}</p>
+        <h1 class="mix hero-title reveal" id="hero-title" style="--d:80ms" aria-label="${esc(h.headline.map(plain).join(" "))}">
+          ${h.headline.map(l => `<span class="line" aria-hidden="true">${mix(l)}</span>`).join("")}
+        </h1>
+        <p class="hero-text reveal" style="--d:160ms">${esc(h.text)}</p>
+        <div class="reveal" style="--d:240ms"><a class="pill pill--ring" href="${esc(h.cta.href)}">${esc(h.cta.label)}</a></div>
+      </div>
+      <div class="figure hero-figure">${figure(h.image, { round: true, float: true, glass: true })}</div>
+    </div>
+  </section>`;
+}
+
+function renderSellers() {
+  const s = CONFIG.sellers;
+  return `<section class="section sellers" id="shop" aria-labelledby="sellers-title">
+    <div class="container">
+      ${head("sellers-title", s.title, s.intro)}
+      <div class="rail reveal" id="product-rail" role="region" aria-label="Top selling plants, scrollable" tabindex="0">
+        <ul class="rail-list product-list">
+          ${CONFIG.products.map((p, i) => `
+          <li class="product" style="--step:${i % 4}">
+            <div class="figure product-figure">${figure(p.image)}</div>
+            <h3>${esc(p.name)}</h3>
+            <p>${esc(p.description)}</p>
+            <div class="product-foot">
+              <button class="pill pill--sm" type="button" data-add="${esc(p.name)}" aria-label="Buy now: ${esc(p.name)}, ${esc(moneyText(p.price))}">Buy Now</button>
+              <span class="price">${money(p.price)}</span>
+            </div>
+          </li>`).join("")}
+        </ul>
+      </div>
+      ${railControls("product-rail", "plants")}
+    </div>
+  </section>`;
+}
+
+function renderFotd() {
+  const f = CONFIG.flowerOfDay;
+  return `<section class="section fotd" aria-labelledby="fotd-title">
+    <div class="container">
+      <article class="fotd-banner on-dark reveal">
+        <div class="fotd-art" aria-hidden="false">
+          <svg class="fotd-rings" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+            <circle cx="100" cy="100" r="57"/><circle cx="100" cy="100" r="68"/>
+            <circle class="dash" cx="100" cy="100" r="79"/><circle cx="100" cy="100" r="90"/><circle cx="100" cy="100" r="99"/>
+          </svg>
+          <div class="figure fotd-figure">${figure(f.image, { round: true })}</div>
+        </div>
+        <div class="fotd-content">
+          <p class="eyebrow" id="fotd-date"></p>
+          <h2 class="mix fotd-title" id="fotd-title">${mix(f.title)}</h2>
+          <h3 class="fotd-sub">About ${esc(f.name)}<span class="latin">${esc(f.latin)}</span></h3>
+          ${f.paragraphs.map(p => `<p>${esc(p)}</p>`).join("")}
+          <dl class="facts">${f.facts.map(x => `<div><dt>${esc(x.label)}</dt><dd>${esc(x.value)}</dd></div>`).join("")}</dl>
+          <button class="pill pill--light" type="button" data-add="${esc(f.name)} bunch">${esc(f.cta)} — ${esc(moneyText(f.price))}</button>
+        </div>
+      </article>
+    </div>
+  </section>`;
+}
+
+function renderCategories() {
+  const c = CONFIG.categories;
+  return `<section class="section" id="about" aria-labelledby="cats-title">
+    <div class="container">
+      ${head("cats-title", c.title, c.intro)}
+      <ul class="cats">
+        ${c.items.map((it, i) => `
+        <li class="reveal" style="--d:${i * 80}ms">
+          <a class="cat" href="${esc(it.href)}">
+            <div class="cat-arch"><div class="cat-media media-fill">${media(it.image, { fill: true })}</div></div>
+            <span class="cat-name">${esc(it.name)}</span>
+            <span class="cat-sub">${esc(it.note)}</span>
+          </a>
+        </li>`).join("")}
+      </ul>
+    </div>
+  </section>`;
+}
+
+function renderCare() {
+  const c = CONFIG.care;
+  return `<section class="section" id="care" aria-labelledby="care-title">
+    <div class="container">
+      ${head("care-title", c.title, c.intro)}
+      <div class="care-grid">
+        ${c.tips.map((t, i) => `
+        <article class="tip reveal" style="--d:${i * 100}ms">
+          <div class="tip-icon">${ICONS[t.icon] || ICONS.flower}</div>
+          <h3 class="mix">${mix(t.title)}</h3>
+          <p>${esc(t.text)}</p>
+        </article>`).join("")}
+      </div>
+      <div class="faq reveal" id="faq">
+        <h3 class="mix faq-title">${mix(c.faqTitle)}</h3>
+        ${CONFIG.faqs.map(f => `
+        <details>
+          <summary>${esc(f.q)}<span class="plus" aria-hidden="true">${ICONS.plus}</span></summary>
+          <p class="faq-answer">${esc(f.a)}</p>
+        </details>`).join("")}
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderTestimonials() {
+  const t = CONFIG.testimonials;
+  return `<section class="section" aria-labelledby="quotes-title">
+    <div class="container">
+      ${head("quotes-title", t.title, t.intro)}
+      <div class="rail reveal" id="quote-rail" role="region" aria-label="Customer testimonials, scrollable" tabindex="0" style="margin-top:28px">
+        <ul class="rail-list quote-list">
+          ${t.items.map((q, i) => `
+          <li class="quote-item" style="--step:${i % 4}">
+            <figure class="quote-card" style="--c:${esc(q.color)}">
+              <h3>${esc(q.name)}</h3>
+              <blockquote>“${esc(q.quote)}”</blockquote>
+              <figcaption class="loc"><span class="dot" aria-hidden="true"></span>${esc(q.location)}</figcaption>
+              <span class="watermark" aria-hidden="true">${ICONS.watermark}</span>
+            </figure>
+            <span class="avatar" style="--c:${esc(q.color)}" aria-hidden="true">${esc(q.initials)}</span>
+          </li>`).join("")}
+        </ul>
+      </div>
+      ${railControls("quote-rail", "testimonials")}
+    </div>
+  </section>`;
+}
+
+function renderNewsletter() {
+  const n = CONFIG.newsletter;
+  return `<section class="section" aria-labelledby="news-title">
+    <div class="container">
+      <div class="news-panel reveal">
+        <div class="figure news-figure" aria-hidden="false">${figure(n.image, { round: true })}</div>
+        <div class="figure news-figure-sm">${figure(n.imageSmall, { round: true })}</div>
+        <h2 class="mix news-title" id="news-title">${mix(n.title)}</h2>
+        <p class="news-text">${esc(n.text)}</p>
+        <form class="news-form" id="news-form" novalidate>
+          <label class="sr-only" for="news-email">Email address</label>
+          <input id="news-email" name="email" type="email" autocomplete="email" required placeholder="${esc(n.placeholder)}" aria-describedby="news-msg">
+          <button class="pill" type="submit">${esc(n.button)}</button>
+        </form>
+        <p class="news-msg" id="news-msg" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderFooter() {
+  const f = CONFIG.footer;
+  return `<div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="#home" style="--logo-cut:var(--cocoa)" aria-label="${esc(B.name)} — back to top">${ICONS.bud}<span>${esc(B.name)}</span></a>
+        <p class="footer-about">${esc(f.about)}</p>
+        <ul class="socials"${f.socials.length ? "" : " hidden"}>
+          ${f.socials.map(s => `<li><a href="${esc(s.href)}" aria-label="${esc(B.name)} on ${esc(s.label)}">${ICONS[s.icon] || ICONS.flower}</a></li>`).join("")}
+        </ul>
+      </div>
+      ${f.columns.map(col => `
+      <nav aria-label="${esc(col.title)}">
+        <h4>${esc(col.title)}</h4>
+        <ul>${col.links.map(l => `<li><a href="${esc(l.href)}">${esc(l.label)}</a></li>`).join("")}</ul>
+      </nav>`).join("")}
+      <div>
+        <h4>${esc(f.contactTitle)}</h4>
+        <address style="font-style:normal">
+          <ul class="contact-list">
+            <li>${ICONS.pinMap}<span>${esc(B.address)}<br>${esc(B.city)}</span></li>
+            <li>${ICONS.phone}<a href="tel:${esc(B.phone.replace(/[^\d+]/g, ""))}">${esc(B.phone)}</a></li>
+            <li>${ICONS.mail}<a href="mailto:${esc(B.email)}">${esc(B.email)}</a></li>
+            <li>${ICONS.clock}<span>${esc(B.hours)}</span></li>
+          </ul>
+        </address>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>${esc(f.copyright)}</p>
+      <ul>${f.legal.map(l => `<li><a href="${esc(l.href)}">${esc(l.label)}</a></li>`).join("")}</ul>
+    </div>
+  </div>`;
+}
+
+/* ---------- Mount ---------- */
+document.title = `${B.name} — ${B.tagline}`;
+document.querySelector('meta[name="description"]').setAttribute("content", tok(CONFIG.meta.description));
+document.getElementById("site-header").innerHTML = renderHeader();
+document.getElementById("main").innerHTML =
+  renderHero() + renderSellers() + renderFotd() + renderCategories() + renderCare() + renderTestimonials() + renderNewsletter();
+document.getElementById("contact").innerHTML = renderFooter();
+
+const dateEl = document.getElementById("fotd-date");
+dateEl.textContent = new Intl.DateTimeFormat(B.locale, { weekday: "long", month: "long", day: "numeric" }).format(new Date());
+
+/* ---------- Header: scrolled state + mobile menu ---------- */
+const header = document.getElementById("site-header");
+const toggle = document.getElementById("menu-toggle");
+const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 12);
+window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+function setMenu(open) {
+  header.classList.toggle("menu-open", open);
+  toggle.setAttribute("aria-expanded", String(open));
+  toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+}
+toggle.addEventListener("click", () => setMenu(!header.classList.contains("menu-open")));
+document.getElementById("nav-links").addEventListener("click", e => { if (e.target.closest("a")) setMenu(false); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && header.classList.contains("menu-open")) { setMenu(false); toggle.focus(); } });
+window.addEventListener("resize", () => { if (window.innerWidth > 860) setMenu(false); });
+
+/* ---------- Cart + toast ---------- */
+let cartCount = CONFIG.cart.startCount || 0;
+const cartBtn = document.getElementById("cart-btn");
+const badge = document.getElementById("cart-count");
+const toastEl = document.getElementById("toast");
+let toastTimer;
+function toast(msg) {
+  toastEl.innerHTML = `<span class="toast-icon">${ICONS.check}</span><span>${esc(msg)}</span>`;
+  toastEl.classList.add("is-on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove("is-on"), 2600);
+}
+function renderCart() {
+  badge.textContent = cartCount;
+  cartBtn.setAttribute("aria-label", `Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`);
+}
+renderCart();
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-add]");
+  if (!btn) return;
+  cartCount++;
+  renderCart();
+  badge.classList.remove("bump"); void badge.offsetWidth; badge.classList.add("bump");
+  toast(`${btn.dataset.add} ${CONFIG.toast.added}`);
+});
+cartBtn.addEventListener("click", () => toast(CONFIG.toast.cart.replace("{n}", cartCount)));
+
+/* ---------- Carousels: buttons, swipe (native), mouse drag, keyboard ---------- */
+function setupRail(rail) {
+  const controls = document.querySelector(`[data-controls="${rail.id}"]`);
+  const [prev, next] = controls.querySelectorAll("button");
+  const list = rail.querySelector(".rail-list");
+  const step = () => {
+    const card = list.firstElementChild;
+    const gap = parseFloat(getComputedStyle(list).columnGap) || 24;
+    return card ? card.getBoundingClientRect().width + gap : rail.clientWidth * 0.8;
+  };
+  const go = dir => rail.scrollBy({ left: dir * step(), behavior: reduceMotion ? "auto" : "smooth" });
+  const update = () => {
+    const max = rail.scrollWidth - rail.clientWidth;
+    controls.hidden = max <= 2;
+    prev.disabled = rail.scrollLeft <= 6;
+    next.disabled = rail.scrollLeft >= max - 6;
+  };
+  prev.addEventListener("click", () => go(-1));
+  next.addEventListener("click", () => go(1));
+  rail.addEventListener("keydown", e => {
+    if (e.target !== rail) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+    if (e.key === "ArrowLeft")  { e.preventDefault(); go(-1); }
+  });
+  rail.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+  window.addEventListener("load", update);
+  update();
+
+  // Mouse drag (touch uses native swipe)
+  let down = false, startX = 0, startLeft = 0, moved = false;
+  rail.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    down = true; moved = false; startX = e.clientX; startLeft = rail.scrollLeft;
+  });
+  window.addEventListener("pointermove", e => {
+    if (!down) return;
+    const dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) > 5) { moved = true; rail.classList.add("is-drag"); }
+    if (moved) rail.scrollLeft = startLeft - dx;
+  });
+  window.addEventListener("pointerup", () => {
+    if (!down) return;
+    down = false;
+    if (moved) {
+      rail.classList.remove("is-drag");
+      setTimeout(() => { moved = false; }, 0);
+    }
+  });
+  rail.addEventListener("click", e => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+}
+document.querySelectorAll(".rail[id]").forEach(setupRail);
+
+/* ---------- Newsletter ---------- */
+const form = document.getElementById("news-form");
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const input = form.elements.email;
+  const msg = document.getElementById("news-msg");
+  const ok = input.value.trim() !== "" && input.checkValidity();
+  input.setAttribute("aria-invalid", String(!ok));
+  if (!ok) { msg.textContent = tok(CONFIG.newsletter.error); input.focus(); return; }
+  const btn = form.querySelector('button'); btn.disabled = true;
+  fetch("https://formsubmit.co/ajax/" + B.email, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ _subject: "New Wildmoss newsletter signup", _template: "table", _captcha: "false", email: input.value.trim() }) })
+    .then(r => { if (!r.ok) throw 0; msg.textContent = tok(CONFIG.newsletter.success); form.reset(); })
+    .catch(() => { msg.textContent = "Couldn't subscribe right now. Please try again in a minute."; })
+    .finally(() => { btn.disabled = false; });
+});
+
+/* ---------- Scroll reveal ---------- */
+const revealEls = document.querySelectorAll(".reveal");
+if (reduceMotion || !("IntersectionObserver" in window)) {
+  revealEls.forEach(el => el.classList.add("is-in"));
+} else {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); } });
+  }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+  revealEls.forEach(el => io.observe(el));
+}
+</script>
+</body>
+</html>
