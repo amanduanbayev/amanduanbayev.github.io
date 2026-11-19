@@ -74,22 +74,15 @@ footer{position:relative;background:#0A0A0A;border-top:1.6px solid #fff;padding:
 <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
 <div class="row">
 <label class="f"><span class="lab">Your name *</span><input name="Name" autocomplete="name" required></label>
-<label class="f"><span class="lab">Business name *</span><input name="Business" autocomplete="organization" required></label>
-</div>
-<div class="row">
 <label class="f"><span class="lab">Email *</span><input type="email" name="Email" autocomplete="email" spellcheck="false" required></label>
-<label class="f"><span class="lab">Phone<span class="hint"> · optional</span></span><input type="tel" name="Phone" autocomplete="tel" inputmode="tel"></label>
 </div>
 <div class="row">
+<label class="f"><span class="lab">Phone<span class="hint"> · optional</span></span><input type="tel" name="Phone" autocomplete="tel" inputmode="tel"></label>
 <label class="f"><span class="lab">Type of business *</span><select name="Business type" required><option value="">Choose one…</option><option>Landscaping</option><option>Moving</option><option>Florist</option><option>Café / restaurant</option><option>Salon / beauty</option><option>Trades / home services</option><option>Retail shop</option><option>Other</option></select></label>
-<label class="f"><span class="lab">Current website<span class="hint"> · optional</span></span><input type="url" name="Current website" placeholder="https://… or leave empty" spellcheck="false"></label>
 </div>
+<label class="f"><span class="lab">Current website<span class="hint"> · optional</span></span><input type="url" name="Current website" placeholder="https://… or leave empty" spellcheck="false"></label>
 <fieldset><legend class="lab">What do you need? *</legend><div class="chips"><label class="chip"><input type="radio" name="Need" value="A new website" required><span>A new website</span></label><label class="chip"><input type="radio" name="Need" value="A redesign" required><span>A redesign</span></label><label class="chip"><input type="radio" name="Need" value="Not sure yet" required><span>Not sure yet</span></label></div></fieldset>
 <fieldset><legend class="lab">Best way to reach you</legend><div class="chips"><label class="chip"><input type="radio" name="Contact by" value="Email" checked><span>Email</span></label><label class="chip"><input type="radio" name="Contact by" value="Text"><span>Text</span></label><label class="chip"><input type="radio" name="Contact by" value="Call"><span>Call</span></label></div></fieldset>
-<div class="row">
-<label class="f"><span class="lab">Good day for a quick call<span class="hint"> · optional</span></span><input type="date" name="Preferred day"></label>
-<label class="f"><span class="lab">Time of day</span><select name="Preferred time"><option value="">Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select></label>
-</div>
 <label class="f"><span class="lab">Anything else?<span class="hint"> · optional</span></span><textarea name="Message" rows="4" placeholder="Services you offer, sites you like, deadlines…"></textarea></label>
 <p id="err" class="err" role="alert" hidden></p>
 <button type="submit" id="send">Send my request <span aria-hidden="true">↗</span></button>
@@ -108,7 +101,6 @@ footer{position:relative;background:#0A0A0A;border-top:1.6px solid #fff;padding:
 <script>
 (function(){
 var f=document.getElementById('book'),btn=document.getElementById('send'),err=document.getElementById('err'),done=document.getElementById('done');
-var d=f.querySelector('input[type=date]');var t=new Date();t.setDate(t.getDate()+1);d.min=t.toISOString().slice(0,10);
 function show(m){err.textContent=m;err.hidden=false;}
 f.addEventListener('input',function(e){e.target.classList.remove('bad');});
 f.addEventListener('submit',function(e){
@@ -119,7 +111,7 @@ f.addEventListener('submit',function(e){
   if(bad.length){show('Please fill in the fields marked with *.');(bad[0].type==='radio'?bad[0]:bad[0]).focus();return;}
   var data={};new FormData(f).forEach(function(v,k){if(v!=='')data[k]=v;});
   if(data._honey)return;
-  data._subject='New mockup request: '+data.Business;data._template='table';data._replyto=data.Email;data._captcha='false';
+  data._subject='New mockup request: '+data.Name+' ('+data['Business type']+')';data._template='table';data._replyto=data.Email;data._captcha='false';
   btn.disabled=true;btn.firstChild.nodeValue='Sending… ';
   fetch('https://formsubmit.co/ajax/amanduanbaev@gmail.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(data)})
   .then(function(r){return r.json().then(function(j){if(!r.ok||String(j.success)==='false')throw new Error(j.message||'failed');});})
