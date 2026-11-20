@@ -1264,5 +1264,38 @@ toggleNotes: () => this.setState({ notes: !notesOn })
 }
 __mount(Component);
 </script>
+<button type="button" id="totop" aria-label="Back to top" tabindex="-1"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg></button>
+<style>
+#totop{position:fixed;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom));z-index:900;width:52px;height:52px;padding:0;border:0;border-radius:50%;background:#2452E0;color:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 1.6px rgba(255,255,255,.9);opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;transition:opacity .25s ease,transform .25s ease,bottom .25s ease,background .2s}
+#totop.on{opacity:1;transform:none;pointer-events:auto}
+#totop:hover{background:#1A3FB8}
+#totop:focus-visible{outline:3px solid #FFB300;outline-offset:3px}
+@media (max-width:700px){#totop.lift{bottom:calc(92px + env(safe-area-inset-bottom))}}
+@media (prefers-reduced-motion:reduce){#totop{transition:none}}
+</style>
+<script>
+(function () {
+  var b = document.getElementById('totop'); if (!b) return;
+  var ticking = false;
+  function upd() {
+    ticking = false;
+    var on = window.scrollY > window.innerHeight * 0.9;
+    b.classList.toggle('on', on); b.tabIndex = on ? 0 : -1;
+    var nav = document.querySelector('.pnav'), lift = false;
+    if (nav) { var r = nav.getBoundingClientRect(); lift = r.bottom > window.innerHeight - 4 && r.top < window.innerHeight; }
+    b.classList.toggle('lift', lift);
+    var ov = document.querySelector('.wov'); b.style.display = ov ? 'none' : '';
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+  window.addEventListener('resize', upd);
+  new MutationObserver(upd).observe(document.body, { childList: true, subtree: true });
+  b.addEventListener('click', function () {
+    var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: rm ? 'auto' : 'smooth' });
+    var t = document.querySelector('#top a, a[href="#top"]'); if (t) setTimeout(function () { t.focus({ preventScroll: true }); }, rm ? 0 : 600);
+  });
+  upd();
+})();
+</script>
 </body>
 </html>
